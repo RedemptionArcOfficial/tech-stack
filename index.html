@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Stack Diagram</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 110vh;
+            padding: 740px;
+        }
+        .container {
+            position: absolute;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 120px;
+            width: 90vw;
+            max-width: 1200px;
+            margin: 0 auto;
+            top: 16rem;
+            margin-bottom: 2000px;
+        }
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+            width: 100%;
+        }
+        .component-card {
+            position: absolute;
+            width: 15vw;
+            height: 15vw;
+            max-width: 180px;
+            max-height: 180px;
+            min-width: 120px;
+            min-height: 120px;
+            background: #16213e;
+            border: 2px solid #00ffcc;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .component-card:hover {
+            transform: scale(2);
+            box-shadow: 0 8px 25px rgba(0, 255, 204, 0.5);
+            border-color: #ff007a;
+            max-width: 350px;
+            max-height: 350px;
+            min-width: fit-content;
+            padding: 1rem;
+            min-height: 250px; 
+        }
+        .expand-card{
+            max-width: 350px;
+            max-height: 350px;
+            min-width: 300px;
+            min-height: 300px;
+            position: absolute;
+        }
+        .hover-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(0, 255, 204, 0.85);
+            color: #1a1a2e;
+            padding: 12px;
+            font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+            line-height: 1.4;
+            border-radius: 8px;
+            width: 260px;
+            max-width: 85vw;
+            z-index: 20;
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            white-space: normal;
+            word-wrap: break-word;
+            height: 75%;
+            width: 75%;
+        }
+        .component-card:hover .hover-popup {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        .icon {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 6px;
+        }
+        .footer{
+            height: 144px;
+            position: absolute;
+            bottom: -1px;
+            text-align: center;
+            width: 21rem;
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 2rem;
+            align-items: center;
+        }
+        .footer h1{
+            position: fixed;
+        }
+        /* Square formation positioning with responsive scaling */
+        .component-card:nth-child(1) { transform: translate(calc(-25vw - 90px), calc(-25vw - 90px)); } /* Top-left */
+        .component-card:nth-child(2) { transform: translate(0, calc(-25vw - 90px)); } /* Top-center */
+        .component-card:nth-child(3) { transform: translate(calc(25vw + 90px), calc(-25vw - 90px)); } /* Top-right */
+        .component-card:nth-child(4) { transform: translate(calc(-25vw - 90px), 0); } /* Middle-left */
+        .component-card:nth-child(5) { transform: translate(calc(25vw + 90px), 0); } /* Middle-right */
+        .component-card:nth-child(6) { transform: translate(calc(-25vw - 90px), calc(25vw + 90px)); } /* Bottom-left */
+        .component-card:nth-child(7) { transform: translate(0, calc(25vw + 90px)); } /* Bottom-center */
+        .component-card:nth-child(8) { transform: translate(calc(25vw + 90px), calc(25vw + 90px)); } /* Bottom-right */
+        .component-card:nth-child(9) { transform: translate(calc(-12.5vw - 45px), calc(-12.5vw - 45px)); } /* Inner top-left */
+        .component-card:nth-child(10) { transform: translate(calc(12.5vw + 45px), calc(-12.5vw - 45px)); } /* Inner top-right */
+        .component-card:nth-child(11) { transform: translate(calc(-12.5vw - 45px), calc(12.5vw + 45px)); } /* Inner bottom-left */
+        .component-card:nth-child(12) { transform: translate(calc(12.5vw + 45px), calc(12.5vw + 45px)); } /* Inner bottom-right */
+        /* Unique transition styles */
+        .card-1 { transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .card-2 { transition: transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out; }
+        .card-3 { transition: transform 0.3s ease-out, border 0.3s ease-out; }
+        .card-4 { transition: transform 0.4s ease-in, box-shadow 0.4s ease-in; }
+        .card-5 { transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-6 { transition: transform 0.45s ease-in-out; }
+        .card-7 { transition: transform 0.3s ease, border 0.3s ease; }
+        .card-8 { transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .card-9 { transition: transform 0.4s ease-out; }
+        .card-10 { transition: transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out; }
+        .card-11 { transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .card-12 { transition: transform 0.45s ease; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="text-3xl font-bold text-[#00ffcc] mt-2">Project Tech Stack</h1>
+    </div>
+    <div class="container">
+        <!-- <div class="header">
+            <h1 class="text-2xl font-bold text-[#00ffcc]">Hover to view content</h1>
+            <h1 class="text-3xl font-bold text-[#00ffcc] mt-2">Project Tech Stack</h1>
+        </div> -->
+        <!-- Agent Core -->
+        <div class="component-card card-1" id="card-1">
+            <img src="https://img.icons8.com/color/48/000000/google-cloud.png" alt="Google Cloud" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Agent Core</h2>
+            <p class="text-[#a0a0a0] text-xs">Google Cloud ADK</p>
+            <div class="hover-popup">Drives intelligent AI agents with advanced tool orchestration and Gemini model chaining for seamless, complex task automation</div>
+        </div>
+        <!-- AI Models -->
+        <div class="component-card card-2" id="card-2">
+            <img src="https://img.icons8.com/color/48/000000/artificial-intelligence.png" alt="AI" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">AI Models</h2>
+            <p class="text-[#a0a0a0] text-xs">Gemini Pro, Vision, STT</p>
+            <div class="hover-popup">Gemini Pro excels in text generation, Vision extracts text from images, and STT analyzes student audio for reading evaluation</div>
+        </div>
+        <!-- Custom Tool Functions -->
+        <div class="component-card card-3" id="card-3">
+            <img src="https://img.icons8.com/color/48/python--v1.png" alt="Python" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Tool Functions</h2>
+            <p class="text-[#a0a0a0] text-xs">Python/Node.js</p>
+            <div class="hover-popup">Implements custom tools like worksheet generators and lesson planners in Python/Node.js for flexible, scalable workflows</div>
+        </div>
+        <!-- Frontend UI -->
+        <div class="component-card card-4" id="card-4">
+            <img src="https://img.icons8.com/color/48/000000/react-native.png" alt="React" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Frontend UI</h2>
+            <p class="text-[#a0a0a0] text-xs">React.js + Tailwind</p>
+            <div class="hover-popup">Delivers a responsive, modern UI with reusable React components styled efficiently using Tailwind CSS for rapid development</div>
+        </div>
+        <!-- Chat Interface -->
+        <div class="component-card card-5" id="card-5">
+            <img src="https://img.icons8.com/color/48/000000/chat.png" alt="Chat" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Chat Interface</h2>
+            <p class="text-[#a0a0a0] text-xs">Gemini Chat UI</p>
+            <div class="hover-popup">Enables intuitive teacher-agent interactions for tasks like weekly planning and generating quizzes from textbook images</div>
+        </div>
+        <!-- Navigation & Feature Pages -->
+        <div class="component-card card-6" id="card-6">
+            <img src="https://img.icons8.com/color/48/compass.png" alt="Navigation" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Navigation</h2>
+            <p class="text-[#a0a0a0] text-xs">React Router + Tailwind</p>
+            <div class="hover-popup">Features a NavBar with tabs for seamless access to attendance, planning, assessments, notifications, and other tools</div>
+        </div>
+        <!-- Authentication -->
+        <div class="component-card card-7" id="card-7">
+            <img src="https://img.icons8.com/color/48/000000/firebase.png" alt="Firebase" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Authentication</h2>
+            <p class="text-[#a0a0a0] text-xs">Firebase Auth</p>
+            <div class="hover-popup">Ensures secure teacher authentication with seamless email and Google login integration for streamlined, safe access</div>
+        </div>
+        <!-- Hosting -->
+        <div class="component-card card-8" id="card-8">
+            <img src="https://img.icons8.com/color/48/000000/web.png" alt="Hosting" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Hosting</h2>
+            <p class="text-[#a0a0a0] text-xs">Firebase Hosting</p>
+            <div class="hover-popup">Provides fast, free, and reliable hosting with Firebase Studio, optimized for hackathon scoring and efficient deployment</div>
+        </div>
+        <!-- Database -->
+        <div class="component-card card-9" id="card-9">
+            <img src="https://img.icons8.com/color/48/000000/database.png" alt="Database" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Database</h2>
+            <p class="text-[#a0a0a0] text-xs">Firebase Firestore</p>
+            <div class="hover-popup">Efficiently manages teacher data, attendance records, syllabus plans, notifications, and detailed assessment results</div>
+        </div>
+        <!-- Audio Storage & Access -->
+        <div class="component-card card-10" id="card-10">
+            <img src="https://img.icons8.com/color/48/000000/audio-file.png" alt="Audio Storage" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Audio Storage</h2>
+            <p class="text-[#a0a0a0] text-xs">Firebase Storage</p>
+            <div class="hover-popup">Securely stores student reading audio for evaluation, enabling detailed feedback within educational workflows</div>
+        </div>
+        <!-- Notification System -->
+        <div class="component-card card-11" id="card-11">
+            <img src="https://img.icons8.com/color/48/appointment-reminders.png" alt="Notification" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Notifications</h2>
+            <p class="text-[#a0a0a0] text-xs">Firebase Messaging</p>
+            <div class="hover-popup">Delivers real-time notifications to students and parents about attendance, project updates, and critical events</div>
+        </div>
+        <!-- Testing & Logs -->
+        <div class="component-card card-12" id="card-12">
+            <img src="https://img.icons8.com/color/48/000000/test-tube.png" alt="Testing" class="icon">
+            <h2 class="text-sm font-semibold text-[#e0e0e0]">Testing & Logs</h2>
+            <p class="text-[#a0a0a0] text-xs">Firebase Emulator</p>
+            <div class="hover-popup">Facilitates local debugging of cloud functions and thorough testing of agent responses to ensure reliability</div>
+        </div>
+    </div>
+    <div class="place-holder">
+        <!-- <p>Place holder Text</p> -->
+    </div>
+    <div class="footer">
+        <h1 class="text-2xl font-bold text-[#00ffcc]">Hover on Card to view content</h1>
+    </div>
+    <script>
+        function expandCard(cardElement) {
+        document.querySelectorAll('.component-card').forEach(card => {
+            if (card !== cardElement) {
+                card.classList.remove('expanded');
+            }
+        });
+
+        cardElement.classList.toggle('expanded');
+}
+
+    </script>
+</body>
+</html>
